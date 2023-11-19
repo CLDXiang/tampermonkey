@@ -1,0 +1,4 @@
+namespace = "http://tampermonkey.net/"
+author = "CLDXiang"
+website = "https://github.com/CLDXiang/tampermonkey"
+license = "MIT"
