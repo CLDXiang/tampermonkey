@@ -7,20 +7,40 @@ function log(...args: any[]) {
   console.log(chalk.hex('#f4b8e4')('BUILD'), ...args)
 }
 
-function convertConfig(configPath: string): [string, string][] {
-  return Object.entries(load(readFileSync(configPath, 'utf-8')))
-    .flatMap<[string, string]>(([k, v]) => {
-      if (Array.isArray(v))
-        return v.map<[string, string]>(i => [k, i])
-      if (typeof v === 'object') {
-        return Object.entries<string>(v)
-          .map<[string, string]>(([subK, v]) => subK === 'default' ? [k, v] : [`${k}:${subK}`, v])
-      }
-      return [[k, v]]
-    })
+function convertConfig(configPath: string): { list: [string, string][], map: Map<string, string> } {
+  const raw = load(readFileSync(configPath, 'utf-8'))
+  const list: [string, string][] = []
+  const map = new Map<string, string>()
+
+  Object.entries(raw).forEach(([k, v]) => {
+    if (Array.isArray(v)) {
+      v.forEach((i) => {
+        list.push([k, i])
+        map.set(k, i)
+      })
+    }
+    else if (typeof v === 'object') {
+      Object.entries<string>(v).forEach(([subK, v]) => {
+        if (subK === 'default') {
+          list.push([k, v])
+          map.set(k, v)
+        }
+        else {
+          list.push([`${k}:${subK}`, v])
+          map.set(`${k}:${subK}`, v)
+        }
+      })
+    }
+    else {
+      list.push([k, v])
+      map.set(k, v)
+    }
+  })
+
+  return { list, map }
 }
 
-const HIGH_PRIORITY_CONFIG_KEYS = ['name', 'namespace', 'version', 'description', 'description:en', 'author']
+const HIGH_PRIORITY_CONFIG_KEYS = ['name', 'name:zh-CN', 'namespace', 'version', 'description', 'description:zh-CN', 'author']
 
 const scripts = readdirSync('src').filter((file) => {
   const stat = statSync(`src/${file}`)
@@ -38,19 +58,30 @@ export default defineConfig({
   outExtension: () => ({ js: '.js' }),
   async onSuccess() {
     const readmeMeta = readFileSync('src/README_META.md', 'utf-8')
-    const scriptNameAndDescriptionList: string[] = []
-    const scriptNameAndDescriptionListEn: string[] = []
+    const scriptNameAndDescriptionList: Record<string, string[]> = {
+      EN: [],
+      CN: [],
+    }
 
-    const baseConfig = convertConfig('src/config.base.toml')
+    const { list: baseConfig } = convertConfig('src/config.base.toml')
     scripts.forEach(async (script) => {
-      const scriptConfig = convertConfig(`src/${script}/config.toml`)
-      const scriptName = scriptConfig.find(([k]) => k === 'name')?.[1]
-      const scriptDescription = scriptConfig.find(([k]) => k === 'description')?.[1]
-      const scriptDescriptionEn = scriptConfig.find(([k]) => k === 'description:en')?.[1]
+      const { list: scriptConfig, map } = convertConfig(`src/${script}/config.toml`)
+      const scriptName = map.get('name')
+      const scriptNameCn = map.get('name:zh-CN')
+      const scriptDescription = map.get('description')
+      const scriptDescriptionCn = map.get('description:zh-CN')
+
       if (scriptName && scriptDescription) {
-        scriptNameAndDescriptionList.push(`[${scriptName}](dist/${script}.js) - ${scriptDescription}`)
-        if (scriptDescriptionEn)
-          scriptNameAndDescriptionListEn.push(`[${scriptName}](dist/${script}.js) - ${scriptDescriptionEn}`)
+        // 如果有中文名和描述，原本的 name 和 description 就是英文的，将中文的单独加到中文列表，英文用英文的
+        if (scriptNameCn && scriptDescriptionCn) {
+          // 说明是通用的
+          scriptNameAndDescriptionList.EN.push(`[${scriptName}](dist/${script}.js) - ${scriptDescription}`)
+          scriptNameAndDescriptionList.CN.push(`[${scriptNameCn}](dist/${script}.js) - ${scriptDescriptionCn}`)
+        }
+        else {
+          // zh-CN only
+          scriptNameAndDescriptionList.CN.push(`[${scriptName}](dist/${script}.js) - ${scriptDescription}`)
+        }
       }
       else { console.warn(`[${script}] missing name or description`) }
 
@@ -74,10 +105,10 @@ export default defineConfig({
     // update README.md
     writeFileSync('README.md', readmeMeta.replace(
       '<!--SCRIPT_LIST_EN-->',
-      scriptNameAndDescriptionListEn.map(i => `- ${i}`).join('\n'),
+      scriptNameAndDescriptionList.EN.map(i => `- ${i}`).join('\n'),
     ).replace(
-      '<!--SCRIPT_LIST-->',
-      scriptNameAndDescriptionList.map(i => `- ${i}`).join('\n'),
+      '<!--SCRIPT_LIST_CN-->',
+      scriptNameAndDescriptionList.CN.map(i => `- ${i}`).join('\n'),
     ))
   },
 })

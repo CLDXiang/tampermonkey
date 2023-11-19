@@ -8,4 +8,4 @@ Make my life easier.
 
 ## 脚本列表
 
-<!--SCRIPT_LIST-->
+<!--SCRIPT_LIST_CN-->
