@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name 字体替换为 HarmonyOS，在 Windows 下获得接近苹方的阅读体验
 // @namespace http://tampermonkey.net/
-// @version 1.1
+// @version 1.2
 // @description 使用和 Bilibili 一样的 HarmonyOS 字体，提升不支持苹方的平台（Windows，说的就是你）阅读体验。仅对常见根节点进行检查，不支持字体未声明在根节点的页面，不支持声明了 CSP 限制的页面
 // @author CLDXiang
 // @website https://github.com/CLDXiang/tampermonkey
@@ -17,6 +17,13 @@
 
 "use strict";
 (() => {
+  // src/shared/css.ts
+  function insertStyle(css) {
+    const style = document.createElement("style");
+    style.innerHTML = css;
+    document.head.appendChild(style);
+  }
+
   // src/use-harmony-font/font-face.ts
   var fontFace = `@font-face {
   font-family: 'HarmonyOS_Regular';
@@ -508,13 +515,13 @@
   var appElement = document.getElementById("app") || document.body;
   var currentFontFamily = window.getComputedStyle(appElement).fontFamily;
   if (!currentFontFamily.includes("HarmonyOS_Regular")) {
-    const styleElement = document.createElement("style");
-    styleElement.textContent = fontFace;
-    document.head.appendChild(styleElement);
+    insertStyle(fontFace);
+    let fontFamily;
     const pingFangRegex = /["']?PingFang SC["']?/i;
     if (pingFangRegex.test(currentFontFamily))
-      appElement.style.fontFamily = currentFontFamily.replace(pingFangRegex, '"PingFang SC", HarmonyOS_Regular');
+      fontFamily = currentFontFamily.replace(pingFangRegex, '"PingFang SC", HarmonyOS_Regular');
     else
-      appElement.style.fontFamily = `HarmonyOS_Regular, ${currentFontFamily}`;
+      fontFamily = `HarmonyOS_Regular, ${currentFontFamily}`;
+    insertStyle(`html, body, #app { font-family: ${fontFamily} !important; }`);
   }
 })();

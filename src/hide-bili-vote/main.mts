@@ -1,3 +1,3 @@
-const style = document.createElement('style')
-style.innerText = '.bilibili-player-video-popup-vote,.bili-vote { display: none !important; }'
-document.head.appendChild(style)
+import { insertStyle } from '@shared/css'
+
+insertStyle('.bilibili-player-video-popup-vote,.bili-vote { display: none !important; }')

@@ -8,11 +8,15 @@
     "baseUrl": ".",
     "module": "ES2020",
     "moduleResolution": "Bundler",
+    "paths": {
+      "@shared/*": ["src/shared/*"]
+    },
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true
   },
   "include": [
-    "**/*.ts"
+    "**/*.ts",
+    "**/*.mts"
   ]
 }
