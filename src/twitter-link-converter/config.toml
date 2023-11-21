@@ -1,7 +1,7 @@
-version = "1.4"
+version = "1.5"
 match = [
-  "*://*.twitter.com/*",
-  "*://*.x.com/*",
+  "*://*twitter.com/*",
+  "*://*x.com/*",
 ]
 grant = "none"
 run-at = "document-end"

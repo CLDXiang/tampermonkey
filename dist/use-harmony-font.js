@@ -1,16 +1,16 @@
 // ==UserScript==
 // @name 字体替换为 HarmonyOS，在 Windows 下获得接近苹方的阅读体验
 // @namespace http://tampermonkey.net/
-// @version 1.2
+// @version 1.3
 // @description 使用和 Bilibili 一样的 HarmonyOS 字体，提升不支持苹方的平台（Windows，说的就是你）阅读体验。仅对常见根节点进行检查，不支持字体未声明在根节点的页面，不支持声明了 CSP 限制的页面
 // @author CLDXiang
 // @website https://github.com/CLDXiang/tampermonkey
 // @license MIT
 // @match *://*/*
-// @exclude *://*.bilibili.com/*
-// @exclude *://*.github.com/*
-// @exclude *://*.openai.com/*
-// @exclude *://*.twitter.com/*
+// @exclude *://*bilibili.com/*
+// @exclude *://*github.com/*
+// @exclude *://*openai.com/*
+// @exclude *://*twitter.com/*
 // @grant none
 // @run-at document-end
 // ==/UserScript==
