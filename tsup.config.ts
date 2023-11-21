@@ -51,7 +51,7 @@ scripts.forEach(script => log(`- ${script}`))
 
 export default defineConfig({
   entry: Object.fromEntries(
-    scripts.map(script => [script, `src/${script}/main.ts`]),
+    scripts.map(script => [script, `src/${script}/main.mts`]),
   ),
   format: ['iife'],
   clean: true,

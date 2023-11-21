@@ -2,14 +2,12 @@
 // @name Twitter t.co to Direct Link Converter
 // @name:zh-CN 推特 t.co 转直接链接
 // @namespace http://tampermonkey.net/
-// @version 1.3
+// @version 1.4
 // @description Automatically converts Twitter's indirect t.co links into direct, original URLs for a more transparent and streamlined browsing experience.
 // @description:zh-CN 把推特的 t.co 中转跳转链接改为直接跳转
 // @author CLDXiang
 // @website https://github.com/CLDXiang/tampermonkey
 // @license MIT
-// @match *://twitter.com/*
-// @match *://x.com/*
 // @match *://*.twitter.com/*
 // @match *://*.x.com/*
 // @grant none
@@ -18,7 +16,7 @@
 
 "use strict";
 (() => {
-  // src/twitter-link-converter/main.ts
+  // src/twitter-link-converter/main.mts
   function modifyLink(link) {
     if (link.href.includes("t.co")) {
       let urlText = link.innerText;
