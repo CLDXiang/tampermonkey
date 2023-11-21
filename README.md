@@ -10,4 +10,4 @@ Make my life easier.
 
 - [Bilibili弹幕投票屏蔽](dist/hide-bili-vote.js) - 挡住我看老婆了
 - [推特 t.co 转直接链接](dist/twitter-link-converter.js) - 把推特的 t.co 中转跳转链接改为直接跳转
-- [字体替换为 HarmonyOS，在 Windows 下获得接近苹方的阅读体验](dist/use-harmony-font.js) - 在不支持苹方的情况下采用和 Bilibili 一样的 HarmonyOS 字体，提升阅读体验。仅对常见根节点进行检查，不支持部分字体未声明在根节点的页面，不支持声明了 CSP 限制的页面（如 GitHub）
+- [字体替换为 HarmonyOS，在 Windows 下获得接近苹方的阅读体验](dist/use-harmony-font.js) - 使用和 Bilibili 一样的 HarmonyOS 字体，提升不支持苹方的平台（Windows，说的就是你）阅读体验。仅对常见根节点进行检查，不支持字体未声明在根节点的页面，不支持声明了 CSP 限制的页面

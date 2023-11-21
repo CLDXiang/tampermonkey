@@ -1,22 +1,4 @@
-// ==UserScript==
-// @name 字体替换为 HarmonyOS，在 Windows 下获得接近苹方的阅读体验
-// @namespace http://tampermonkey.net/
-// @version 1.0
-// @description 使用和 Bilibili 一样的 HarmonyOS 字体，提升不支持苹方的平台（Windows，说的就是你）阅读体验。仅对常见根节点进行检查，不支持字体未声明在根节点的页面，不支持声明了 CSP 限制的页面
-// @author CLDXiang
-// @website https://github.com/CLDXiang/tampermonkey
-// @license MIT
-// @match *://*/*
-// @exclude *://*.bilibili.com/*
-// @exclude *://*.github.com/*
-// @grant none
-// @run-at document-end
-// ==/UserScript==
-
-"use strict";
-(() => {
-  // src/use-harmony-font/font-face.ts
-  var fontFace = `@font-face {
+export const fontFace = `@font-face {
   font-family: 'HarmonyOS_Regular';
   font-style: normal;
   font-weight: 400;
@@ -500,19 +482,4 @@
   font-display: swap;
   src: url('//s1.hdslb.com/bfs/static/jinkela/long/font/HarmonyOS_Regular.a1.woff2') format('woff2');
   unicode-range: U+21-7e,U+a4,U+a7-a8,U+b0-b1,U+b7;
-}`;
-
-  // src/use-harmony-font/main.mts
-  var appElement = document.getElementById("app") || document.body;
-  var currentFontFamily = window.getComputedStyle(appElement).fontFamily;
-  if (!currentFontFamily.includes("HarmonyOS_Regular")) {
-    const styleElement = document.createElement("style");
-    styleElement.textContent = fontFace;
-    document.head.appendChild(styleElement);
-    const pingFangRegex = /["']?PingFang SC["']?/i;
-    if (pingFangRegex.test(currentFontFamily))
-      appElement.style.fontFamily = currentFontFamily.replace(pingFangRegex, '"PingFang SC", HarmonyOS_Regular');
-    else
-      appElement.style.fontFamily = `HarmonyOS_Regular, ${currentFontFamily}`;
-  }
-})();
+}`
