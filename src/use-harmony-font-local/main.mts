@@ -3,13 +3,15 @@ import { insertStyle } from '@shared/css'
 const appElement = document.getElementById('app') || document.body
 const currentFontFamily = window.getComputedStyle(appElement).fontFamily
 
-if (!currentFontFamily.includes('HarmonyOS_Regular')) {
+const FONT_NAME = 'HarmonyOS Sans SC'
+
+if (!currentFontFamily.includes(FONT_NAME)) {
   let fontFamily
   const pingFangRegex = /["']?PingFang SC["']?/i
   if (pingFangRegex.test(currentFontFamily))
-    fontFamily = currentFontFamily.replace(pingFangRegex, '"PingFang SC", "HarmonyOS Sans SC"')
+    fontFamily = currentFontFamily.replace(pingFangRegex, `"PingFang SC", "${FONT_NAME}"`)
   else
-    fontFamily = `"HarmonyOS Sans SC", ${currentFontFamily}`
+    fontFamily = `"${FONT_NAME}", ${currentFontFamily}`
 
   insertStyle(`html, body, #app, p { font-family: ${fontFamily} !important; }`)
 }

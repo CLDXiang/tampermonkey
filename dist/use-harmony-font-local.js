@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name 使用 HarmonyOS Sans SC 字体，在 Windows 下获得接近苹方的阅读体验
 // @namespace http://tampermonkey.net/
-// @version 1.0.0
+// @version 1.1.0
 // @description 使用本地 HarmonyOS Sans SC 字体，提升不支持苹方的平台（Windows，说的就是你）阅读体验。需要本地安装字体
 // @author CLDXiang
 // @website https://github.com/CLDXiang/tampermonkey
@@ -24,13 +24,14 @@
   // src/use-harmony-font-local/main.mts
   var appElement = document.getElementById("app") || document.body;
   var currentFontFamily = window.getComputedStyle(appElement).fontFamily;
-  if (!currentFontFamily.includes("HarmonyOS_Regular")) {
+  var FONT_NAME = "HarmonyOS Sans SC";
+  if (!currentFontFamily.includes(FONT_NAME)) {
     let fontFamily;
     const pingFangRegex = /["']?PingFang SC["']?/i;
     if (pingFangRegex.test(currentFontFamily))
-      fontFamily = currentFontFamily.replace(pingFangRegex, '"PingFang SC", "HarmonyOS Sans SC"');
+      fontFamily = currentFontFamily.replace(pingFangRegex, `"PingFang SC", "${FONT_NAME}"`);
     else
-      fontFamily = `"HarmonyOS Sans SC", ${currentFontFamily}`;
+      fontFamily = `"${FONT_NAME}", ${currentFontFamily}`;
     insertStyle(`html, body, #app, p { font-family: ${fontFamily} !important; }`);
   }
 })();
