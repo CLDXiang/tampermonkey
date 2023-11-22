@@ -57,17 +57,17 @@ export default defineConfig({
   clean: true,
   outExtension: () => ({ js: '.js' }),
   async onSuccess() {
-    const readmeMeta = readFileSync('src/README_META.md', 'utf-8')
+    const readmeMeta = readFileSync('src/templates/README_META.md', 'utf-8')
     const scriptReadme = {
-      EN: readFileSync('src/SCRIPT_README_TEMPLATE_EN.md', 'utf-8'),
-      CN: readFileSync('src/SCRIPT_README_TEMPLATE_CN.md', 'utf-8'),
+      EN: readFileSync('src/templates/SCRIPT_README_TEMPLATE_EN.md', 'utf-8'),
+      CN: readFileSync('src/templates/SCRIPT_README_TEMPLATE_CN.md', 'utf-8'),
     }
     const scriptNameAndDescriptionList: Record<string, string[]> = {
       EN: [],
       CN: [],
     }
 
-    const { list: baseConfig } = convertConfig('src/config.base.toml')
+    const { list: baseConfig } = convertConfig('src/templates/config.base.toml')
     scripts.forEach(async (script) => {
       const { list: scriptConfig, map } = convertConfig(`src/${script}/config.toml`)
       const scriptName = map.get('name')

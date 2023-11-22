@@ -1,0 +1,7 @@
+name = "使用 HarmonyOS Sans SC 字体，在 Windows 下获得接近苹方的阅读体验"
+description = "使用本地 HarmonyOS Sans SC 字体，提升不支持苹方的平台（Windows，说的就是你）阅读体验。需要本地安装字体"
+version = "1.0.0"
+match = "*://*/*"
+exclude = [ "*://*bilibili.com/*", ]
+grant = "none"
+run-at = "document-end"
