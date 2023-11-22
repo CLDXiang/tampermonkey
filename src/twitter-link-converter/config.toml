@@ -1,4 +1,4 @@
-version = "1.6"
+version = "1.6.0"
 match = [
   "*://*twitter.com/*",
   "*://*x.com/*",

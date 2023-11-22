@@ -1,6 +1,6 @@
 name = "Bilibili弹幕投票屏蔽"
 description = "挡住我看老婆了"
-version = "1.4"
+version = "1.4.0"
 match = [ "*://*bilibili.com/*" ]
 grant = "none"
 run-at = "document-end"

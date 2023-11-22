@@ -2,7 +2,7 @@
 // @name Twitter t.co to Direct Link Converter
 // @name:zh-CN 推特 t.co 转直接链接
 // @namespace http://tampermonkey.net/
-// @version 1.6
+// @version 1.6.0
 // @description Automatically converts Twitter's indirect t.co links into direct, original URLs for a more transparent and streamlined browsing experience.
 // @description:zh-CN 把推特的 t.co 中转跳转链接改为直接跳转
 // @author CLDXiang

@@ -58,6 +58,10 @@ export default defineConfig({
   outExtension: () => ({ js: '.js' }),
   async onSuccess() {
     const readmeMeta = readFileSync('src/README_META.md', 'utf-8')
+    const scriptReadme = {
+      EN: readFileSync('src/SCRIPT_README_TEMPLATE_EN.md', 'utf-8'),
+      CN: readFileSync('src/SCRIPT_README_TEMPLATE_CN.md', 'utf-8'),
+    }
     const scriptNameAndDescriptionList: Record<string, string[]> = {
       EN: [],
       CN: [],
@@ -70,6 +74,7 @@ export default defineConfig({
       const scriptNameCn = map.get('name:zh-CN')
       const scriptDescription = map.get('description')
       const scriptDescriptionCn = map.get('description:zh-CN')
+      let cnOnly = false
 
       if (scriptName && scriptDescription) {
         // 如果有中文名和描述，原本的 name 和 description 就是英文的，将中文的单独加到中文列表，英文用英文的
@@ -80,6 +85,7 @@ export default defineConfig({
         }
         else {
           // zh-CN only
+          cnOnly = true
           scriptNameAndDescriptionList.CN.push(`[${scriptName}](dist/${script}.js) - ${scriptDescription}`)
         }
       }
@@ -100,6 +106,32 @@ export default defineConfig({
             'utf-8',
           )}`,
       )
+
+      function generateScriptReadme(lang: 'CN' | 'EN', name?: string, description?: string) {
+        const detailPath = `src/${script}/${lang}.md`
+        let detail = existsSync(detailPath) ? readFileSync(detailPath, 'utf-8') : description
+        if (detail?.endsWith('\n'))
+          detail = detail.slice(0, -1)
+        writeFileSync(
+          `dist/${script}.${lang.toLowerCase()}.md`,
+          scriptReadme[lang].replace(
+            '<!--SCRIPT_NAME-->',
+            name ?? '',
+          ).replace(
+            '<!--SCRIPT_DETAIL-->',
+            detail ?? '',
+          ),
+        )
+      }
+
+      // generate scripts README
+      if (!cnOnly) {
+        generateScriptReadme('EN', scriptName, scriptDescription)
+        generateScriptReadme('CN', scriptNameCn, scriptDescriptionCn)
+      }
+      else {
+        generateScriptReadme('CN', scriptName, scriptDescription)
+      }
     })
 
     // update README.md
