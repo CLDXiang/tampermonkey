@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name 字体替换为 B 站 HarmonyOS Sans，在 Windows 下获得接近苹方的阅读体验
 // @namespace http://tampermonkey.net/
-// @version 1.4.0
+// @version 1.4.1
 // @description 使用 Bilibili CDN 的 HarmonyOS 字体，提升不支持苹方的平台（Windows，说的就是你）阅读体验。仅对常见根节点进行检查，不支持字体未声明在根节点的页面，不支持声明了 CSP 限制的页面
 // @author CLDXiang
 // @website https://github.com/CLDXiang/tampermonkey
@@ -18,9 +18,11 @@
 "use strict";
 (() => {
   // src/shared/css.ts
-  function insertStyle(css) {
+  function insertStyle(css, key) {
     const style = document.createElement("style");
     style.innerHTML = css;
+    if (key)
+      style.dataset[key] = "";
     document.head.appendChild(style);
   }
 

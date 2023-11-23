@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name Bilibili弹幕投票屏蔽
 // @namespace http://tampermonkey.net/
-// @version 1.4.0
+// @version 1.4.1
 // @description 挡住我看老婆了
 // @author CLDXiang
 // @website https://github.com/CLDXiang/tampermonkey
@@ -14,9 +14,11 @@
 "use strict";
 (() => {
   // src/shared/css.ts
-  function insertStyle(css) {
+  function insertStyle(css, key) {
     const style = document.createElement("style");
     style.innerHTML = css;
+    if (key)
+      style.dataset[key] = "";
     document.head.appendChild(style);
   }
 
