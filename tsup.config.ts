@@ -1,7 +1,7 @@
-import { existsSync, readFileSync, readdirSync, statSync, write, writeFileSync } from 'node:fs'
-import { defineConfig } from 'tsup'
-import { load } from 'js-toml'
+import { existsSync, readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs'
 import chalk from 'chalk'
+import { load } from 'js-toml'
+import { defineConfig } from 'tsup'
 
 function log(...args: any[]) {
   console.log(chalk.hex('#f4b8e4')('BUILD'), ...args)
@@ -18,20 +18,17 @@ function convertConfig(configPath: string): { list: [string, string][], map: Map
         list.push([k, i])
         map.set(k, i)
       })
-    }
-    else if (typeof v === 'object') {
+    } else if (typeof v === 'object') {
       Object.entries<string>(v).forEach(([subK, v]) => {
         if (subK === 'default') {
           list.push([k, v])
           map.set(k, v)
-        }
-        else {
+        } else {
           list.push([`${k}:${subK}`, v])
           map.set(`${k}:${subK}`, v)
         }
       })
-    }
-    else {
+    } else {
       list.push([k, v])
       map.set(k, v)
     }
@@ -82,14 +79,12 @@ export default defineConfig({
           // 说明是通用的
           scriptNameAndDescriptionList.EN.push(`[${scriptName}](dist/${script}.js) - ${scriptDescription}`)
           scriptNameAndDescriptionList.CN.push(`[${scriptNameCn}](dist/${script}.js) - ${scriptDescriptionCn}`)
-        }
-        else {
+        } else {
           // zh-CN only
           cnOnly = true
           scriptNameAndDescriptionList.CN.push(`[${scriptName}](dist/${script}.js) - ${scriptDescription}`)
         }
-      }
-      else { console.warn(`[${script}] missing name or description`) }
+      } else { console.warn(`[${script}] missing name or description`) }
 
       const allConfig = baseConfig.concat(scriptConfig)
       const config = HIGH_PRIORITY_CONFIG_KEYS
@@ -110,8 +105,7 @@ export default defineConfig({
       function generateScriptReadme(lang: 'CN' | 'EN', name?: string, description?: string) {
         const detailPath = `src/${script}/${lang}.md`
         let detail = existsSync(detailPath) ? readFileSync(detailPath, 'utf-8') : description
-        if (detail?.endsWith('\n'))
-          detail = detail.slice(0, -1)
+        if (detail?.endsWith('\n')) detail = detail.slice(0, -1)
         writeFileSync(
           `dist/${script}.${lang.toLowerCase()}.md`,
           scriptReadme[lang].replace(
@@ -128,8 +122,7 @@ export default defineConfig({
       if (!cnOnly) {
         generateScriptReadme('EN', scriptName, scriptDescription)
         generateScriptReadme('CN', scriptNameCn, scriptDescriptionCn)
-      }
-      else {
+      } else {
         generateScriptReadme('CN', scriptName, scriptDescription)
       }
     })

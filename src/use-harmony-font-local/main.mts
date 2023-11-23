@@ -22,12 +22,10 @@ function insertTempStyle() {
   tempStyle = style
   removeTempStyle = rm
 }
-if (document.body)
-  insertTempStyle()
+if (document.body) insertTempStyle()
 
 function executeWhenDocumentReady() {
-  if (!tempStyle)
-    insertTempStyle()
+  if (!tempStyle) insertTempStyle()
 
   let newStyleContent = ''
   let selectorHasAppElement = false
@@ -50,14 +48,12 @@ function executeWhenDocumentReady() {
           }
         }
       }
-    }
-    catch {}
+    } catch {}
   }
 
   if (newStyleContent) {
     insertStyle(newStyleContent, 'harmonyFont')
-    if (selectorHasAppElement)
-      removeTempStyle()
+    if (selectorHasAppElement) removeTempStyle()
   }
 }
 
