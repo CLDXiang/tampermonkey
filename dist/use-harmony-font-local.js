@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name 使用 HarmonyOS Sans SC 字体，在 Windows 下获得接近苹方的阅读体验
 // @namespace http://tampermonkey.net/
-// @version 1.2.0
+// @version 1.2.1
 // @description 使用本地 HarmonyOS Sans SC 字体，提升不支持苹方的平台（Windows，说的就是你）阅读体验。需要本地安装字体
 // @author CLDXiang
 // @website https://github.com/CLDXiang/tampermonkey
@@ -68,7 +68,6 @@
           if (rule.style && rule.style.fontFamily && !rule.selectorText.startsWith(".use-harmony-font-mark")) {
             const newFontFamily = modifyFontFamily(rule.style.fontFamily);
             if (newFontFamily) {
-              console.log("wtf", rule.style.fontFamily);
               let css = `font-family: ${newFontFamily};`;
               if (rule.style.fontWeight && Number.parseInt(rule.style.fontWeight, 10) < 400)
                 css += "font-weight: 400;";

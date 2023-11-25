@@ -38,7 +38,6 @@ function executeWhenDocumentReady() {
         if (rule.style && rule.style.fontFamily && !rule.selectorText.startsWith('.use-harmony-font-mark')) {
           const newFontFamily = modifyFontFamily(rule.style.fontFamily)
           if (newFontFamily) {
-            console.log('wtf', rule.style.fontFamily)
             let css = `font-family: ${newFontFamily};`
             if (rule.style.fontWeight && Number.parseInt(rule.style.fontWeight, 10) < 400)
               css += 'font-weight: 400;'
